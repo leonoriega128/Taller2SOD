@@ -34,10 +34,8 @@ class HiloComunicacion extends Thread{
       BufferedReader bf = new BufferedReader(new InputStreamReader(canal.getInputStream()));  
       PrintWriter pw = new PrintWriter(canal.getOutputStream());
       String mensaje = bf.readLine();
-            System.out.println(mensaje);
       if(mensaje.compareTo("Hola!") == 0){ 
-          pw.println("Hola!");   
-          pw.flush();
+          pw.write("Hola!");
       }
         }catch(IOException es){
             Logger.getLogger(HiloComunicacion.class.getName());
@@ -59,7 +57,7 @@ class HiloComunicacion extends Thread{
     public void run(){ 
         if(idControlar.compareTo(id) == 0){
         try{
-           ServerSocket server = new ServerSocket(7778);
+           ServerSocket server = new ServerSocket(25001);
            while(true){
                Socket s = server.accept();
                canal = new HiloComunicacion(s);
@@ -71,7 +69,7 @@ class HiloComunicacion extends Thread{
                    }
         }else{
             try{  
-            Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 7778);
+            Socket s = new Socket(InetAddress.getByName("127.0.0.1"), 25001);
             PrintWriter pw = new PrintWriter(s.getOutputStream());
             BufferedReader bf = new BufferedReader(new InputStreamReader(s.getInputStream()));
             pw.println("Hola");
@@ -108,7 +106,6 @@ public class ControlFallos extends Thread{
     }
     
     public void run(){
-         
         planificador.schedule(tareaSaludar, 0,2000);
     }
 
